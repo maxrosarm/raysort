@@ -256,6 +256,9 @@ def _init_local_cluster(job_cfg: JobConfig):
         object_store_memory=1 * GiB,
         storage=job_cfg.system.ray_storage,
     )
+    print(f"HEHEHEY {job_cfg.cluster.local}")
+    if job_cfg.cluster.local:
+        ray_args["storage"] =None
     num_nodes = job_cfg.cluster.instance_count
     cluster = _build_cluster(num_nodes, ray_args, system_config)
     return cluster
@@ -275,7 +278,7 @@ def _get_data_dirs():
         if len(ret) > 0:
             return ret
     return [tempfile.gettempdir()]
-
+    #return ['/Users/maxros01/Documents/dev/raysort/tmp_gensort']
 
 @ray.remote
 def get_node_id() -> ray.NodeID:

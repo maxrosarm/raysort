@@ -85,7 +85,7 @@ using GetBatchRetVal = std::pair<int, PartitionId>;
 // where Pr == sum(len(p) for p in partitions), M == len(partitions)
 class Merger {
 public:
-  Merger(const std::vector<ConstArray<Record>> &partitions,
+  Merger(const std::vector<ConstArray<Record> > &partitions,
          bool ask_for_refills, const std::vector<Key> &boundaries);
 
   // Returns (count, part_id) where
@@ -102,9 +102,9 @@ private:
 };
 
 // A functional version of Merger that handles memory allocation.
-Array<Record> MergePartitions(const std::vector<ConstArray<Record>> &partitions,
+Array<Record> MergePartitions(const std::vector<ConstArray<Record> > &partitions,
                               bool ask_for_refills = false,
-                              const std::vector<Key> &boundaries = {});
+                              const std::vector<Key> &boundaries = std::vector<Key>());
 
 class FileMerger {
 public:

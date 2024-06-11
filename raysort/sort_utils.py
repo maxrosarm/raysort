@@ -158,6 +158,7 @@ def part_info(
     data_dir_idx = part_id % len(cfg.data_dirs)
     prefix = cfg.data_dirs[data_dir_idx]
     filepath = _get_part_path(part_id, prefix=prefix, kind=kind)
+    print(f"!!!!!THIS IS PREFIX {prefix}!!!!!")
     node = (
         cfg.worker_ips[part_id % cfg.num_workers]
         if cfg.is_local_cluster
@@ -189,6 +190,7 @@ def _run_gensort(
     if buf:
         path += ",buf"
     skewstr = "-s" if skew else ""
+    print(f"%%%%%%%%%%%%% PATH BEFORE SUBPROC CALL {path}")
     proc = subprocess.run(
         f"{constants.GENSORT_PATH} {skewstr} -c -b{offset} {size} {path}",
         shell=True,
@@ -215,6 +217,7 @@ def generate_part(
             pinfo = part_info(cfg, part_id)
             path = pinfo.path
         pinfo.size = size * constants.RECORD_SIZE
+        print(f"---GENSORT PATH {path}---")
         pinfo.checksum = _run_gensort(
             offset, size, path, cfg.cloud_storage, cfg.data_skew
         )
@@ -266,8 +269,8 @@ def generate_input(cfg: AppConfig):
         for pinfo in parts:
             writer.writerow(pinfo.to_csv_row())
 
-    if not cfg.cloud_storage:
-        ray.get(ray_utils.run_on_all_workers(cfg, drop_fs_cache))
+    #if not cfg.cloud_storage:
+    #    ray.get(ray_utils.run_on_all_workers(cfg, drop_fs_cache))
 
 
 def create_partition(part_size: int) -> np.ndarray:

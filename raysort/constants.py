@@ -26,8 +26,7 @@ FILENAME_FMT = {
     "temp": "temp-{part_id:010x}",
 }
 SHARD_FMT = "{shard:04x}"
-TMPFS_PATH = os.getenv("TMPFS_PATH", default="/mnt/data0/tmp")
-
+TMPFS_PATH = os.getenv("TMPFS_PATH", default="/tmp")
 # S3
 S3_MIN_CHUNK_SIZE = 5 * 1024 * 1024
 S3_SHARD_NUMBER = 2**16  # 65536, must be a power of 2
